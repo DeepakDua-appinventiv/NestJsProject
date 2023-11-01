@@ -29,7 +29,7 @@ export class UsersService {
     const newUser = new this.userModel({
       name: payload.name,
       email: payload.email,
-      password: this.jwtService.encodePassword(payload.password),
+      password: await this.jwtService.encodePassword(payload.password),
       dateOfBirth: payload.dateOfBirth,
       phoneNumber: payload.phoneNumber,
     });
@@ -38,4 +38,38 @@ export class UsersService {
 
     return { status: HttpStatus.CREATED, error: null };
   }
+
+  public async login({ email, password }: LoginRequestDto): Promise<LoginResponse> {
+    const existingUser = await this.userModel.findOne({ email: email });
+    if(!existingUser){
+        return { status: HttpStatus.NOT_FOUND, error: ['E-Mail not found'], token: null };
+    } 
+    const isPasswordValid: boolean = await this.jwtService.isPasswordValid(password, existingUser.password);
+
+    if(!isPasswordValid){
+        return { status: HttpStatus.NOT_FOUND, error: ['Wrong Password'], token: null }
+    }
+
+    const token: string =await this.jwtService.generateToken(existingUser);
+    return { token, status: HttpStatus.OK, error: null };
+  }
+
+  public async validate({ token }: ValidateRequestDto): Promise<ValidateResponse>{
+    const decoded: User = await this.jwtService.verify(token);
+
+    if(!decoded){
+        return { status: HttpStatus.FORBIDDEN, error: ['token is invalid'], userId: null }
+    }
+
+    const user: User = await this.jwtService.validateUser(decoded);
+
+    if(!user) {
+        return { status: HttpStatus.CONFLICT, error: ['User not found'], userId: null };
+    }
+
+    return { status: HttpStatus.OK, error: null, userId: decoded.id };
+  }
+
+//   public async logout({userId: string})
+  
 }

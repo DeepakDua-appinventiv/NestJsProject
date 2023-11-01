@@ -24,25 +24,25 @@ export class JwtService {
     return this.userModel.findById(decoded.id).exec();
   }
 
-  public generateToken(auth: User): string {
-    return this.jwt.sign({ id: auth._id, email: auth.email });
+  public async generateToken(user: User): Promise<string> {
+    return await this.jwt.sign({ id: user._id, email: user.email });
   }
 
-  public isPasswordValid(
+  public async isPasswordValid(
     password: string,
     userPassword: string,
   ): Promise<boolean> {
-    return bcrypt.compare(password, userPassword);
+    return await bcrypt.compare(password, userPassword);
   }
 
   public async encodePassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(10);
-    return bcrypt.hash(password, salt);
+    return await bcrypt.hash(password, salt);
   }
 
   public async verify(token: string): Promise<any> {
     try {
-      return this.jwt.verify(token);
+      return await this.jwt.verify(token);
     } catch (err) {
       throw err;
     }

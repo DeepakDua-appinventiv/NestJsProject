@@ -1,8 +1,10 @@
+/* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 
 export const protobufPackage = "users";
 
+/** SignUp */
 export interface SignUpRequest {
   name: string;
   email: string;
@@ -16,6 +18,7 @@ export interface SignUpResponse {
   error: string[];
 }
 
+/** Login */
 export interface LoginRequest {
   email: string;
   password: string;
@@ -37,6 +40,7 @@ export interface ValidateResponse {
   userId: number;
 }
 
+/** Logout */
 export interface LogoutRequest {
   token: string;
 }
