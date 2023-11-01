@@ -13,7 +13,7 @@ import { UsersService } from './users.service';
         options: {
           url: '0.0.0.0:50051',
           package: USERS_PACKAGE_NAME,
-          protoPath: 'node_modules/grpc-nest-proto/proto/auth.proto',
+          protoPath: 'node_modules/grpc-nest-proto/proto/users.proto',
         },
       },
     ]),

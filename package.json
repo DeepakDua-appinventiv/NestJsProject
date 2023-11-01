@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "proto:install": "npm i git+https://github.com/DeepakDua-appinventiv/StockMarketProto.git",
-    "proto:users": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto -I=./node_modules/StockMarketProto/proto --ts_proto_out=src/auth/ node_modules/StockMarketProto/proto/users.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
+    "proto:users": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto -I=./node_modules/grpc-nest-proto/proto --ts_proto_out=src/users/ node_modules/grpc-nest-proto/proto/users.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
     "proto:all": "npm run proto:users"
   },
   "dependencies": {
